@@ -37,7 +37,7 @@ $ minikube start  -p onecloud --image-repository=registry.aliyuncs.com/google_co
 ```
 ### 部署Cloudpods onecloud operator
 
-Cloudpods k8s operator地址： https://github.com/yunionio/onecloud-operator
+Cloudpods k8s operator地址： https://github.com/yunionio/cloudpods-operator
 
 ```bash
 # 下载 onecloud-operator 的 yaml 文件

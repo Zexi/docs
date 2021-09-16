@@ -1,9 +1,23 @@
 ---
-title: "ROADMAP"
-weight: 101
+title: "开发计划"
+weight: 170
+edition: ce
+oem_ignore: true
 description: >
-  产品开发计划
+  产品开发计划和Roadmap
 ---
+
+## 架构
+
+优化Cloudpods的代码和架构
+
+- [ ] 把本地IDC的云平台管理功能（Cloudpods内置私有云，包含KVM，裸金属和VMware）和多云管理功能（纳管其他平台）分拆为不同的组件
+- [ ] 内置私有云：把存储管理功能从Host Agent分离出来，成为一个独立的存储代理服务
+- [ ] 内置私有云：集成Rook以提供云原生的共享存储方案
+- [ ] 内置私有云：将Baremetal Agent的状态存储在数据库中（现在是在内存中），使得Baremetal Agent可以水平扩展
+- [ ] 多云管理：允许管理多个内置私有云实例
+- [ ] 多云管理：重构资源同步代码，更好的代码结构，更细粒度地控制资源同步
+- [ ] 支持SQLITE数据库
 
 ## 多云资源对接
 

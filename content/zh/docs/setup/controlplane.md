@@ -28,10 +28,13 @@ Cloudpods 相关的组件运行在 kubernetes 之上，环境以及相关的软�
 
 mariadb 作为服务数据持久化的数据库，可以部署在其它节点或者使用单独维护的。下面假设还没有部署 mariadb，在控制节点上安装设置 mariadb。
 
-为了方便运行维护，mariadb推荐打开两个参数设施：
+为了方便运行维护，mariadb推荐打开四个参数设施：
 
 * skip_name_resolve：取消域名解析
 * expire_logs_days=30：设置binlog的超时时间为30天，超过30天的binglog自动删除
+* innodb_file_per_table=ON: 设置innodb的每张表都用一个独立文件存储数据，便于后期数据清理
+* max_connections=300: 设置最大连接数为300
+* max_allowed_packet=20M: 设置最大数据包大小为20M
 
 ```bash
 $ MYSQL_PASSWD='your-sql-passwd'
@@ -53,6 +56,9 @@ symbolic-links=0
 skip_name_resolve
 # auto delete binlog older than 30 days
 expire_logs_days=30
+innodb_file_per_table=ON
+max_connections = 300
+max_allowed_packet=20M
 
 [mysqld_safe]
 log-error=/var/log/mariadb/mariadb.log
