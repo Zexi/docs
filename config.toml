@@ -68,6 +68,11 @@ time_format_blog = "02.01.2006"
     url = "docs/quickstart/"
 
 [[languages.zh.menu.main]]
+    name = "服务订阅"
+    weight = 29
+    url = "https://10.168.222.212:8090/subscription/index.html"
+
+[[languages.zh.menu.main]]
     name = "GitHub"
     url = "https://github.com/yunionio/cloudpods"
     pre = "<i class='fab fa-github'></i>"
