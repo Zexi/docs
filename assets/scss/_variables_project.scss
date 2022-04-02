@@ -543,3 +543,54 @@ footer.d-print-none {
     border-color: grey transparent transparent transparent;
   }
 }
+
+.subscription-intro {
+  padding-top: 2%;
+}
+
+#subscription-pricing {
+
+  .subscription-edition-describe {
+    font-size: 0.7em;
+  }
+
+  border-collapse: collapse;
+  width: 100%;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+
+  th, td {
+    text-align: center;
+    padding: 8px;
+    border: 1px solid #ddd;
+  }
+
+  .td-table {
+    vertical-align: top;
+  }
+
+  th:first-child, td:first-child {
+    text-align: left;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: $primary;
+    // background-color: #3666ff;
+    color: white;
+  }
+
+  table {
+    width: 100%;
+    font-size: 0.9em;
+
+    th {
+      background-color: #1678ff;
+    }
+  }
+}
