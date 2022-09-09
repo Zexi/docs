@@ -8,9 +8,9 @@ clean:
 
 online-build: clean
 	./scripts/build.py \
-		--host=https://docs.yunion.cn \
 		--edition=ee \
-		--multi-versions
+		# --host=https://docs.yunion.cn \
+		#--multi-versions
 
 offline-build: clean
 	./scripts/build.py \
