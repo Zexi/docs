@@ -1,9 +1,0 @@
-#!/bin/sh
-
-USER=${USER:-yunion}
-HOST=${HOST:-yunion-doc}
-DIR=/var/www/doc-os/
-
-rm -rf ./public
-make ce-build
-rsync -avz --delete public/ $USER@$HOST:$DIR
