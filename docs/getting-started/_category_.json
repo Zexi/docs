@@ -1,0 +1,9 @@
+{
+  "label": "安装部署",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "介绍如何安装 Cloudpods 不同产品。"
+  }
+}
+
