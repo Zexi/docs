@@ -41,5 +41,7 @@ _output
 __pycache__
 data/
 
+docs-old
+
 # docusaurus
 .docusaurus/

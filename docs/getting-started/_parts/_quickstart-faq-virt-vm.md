@@ -7,10 +7,11 @@ All in One 部署的节点会部署 Cloudpods host 计算服务，作为宿主�
 
 ```bash
 # 查看是否使用 yn 内核
-$ uname -a | grep yn
+uname -a | grep yn
 Linux office-controller 3.10.0-1160.6.1.el7.yn20201125.x86_64
+
 # 如果内核不是带有 yn 关键字的版本，可能是第一次使用 ocboot 安装，重启即可进入 yn 内核
-$ reboot
+reboot
 ```
 :::
 

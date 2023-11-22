@@ -1,25 +1,23 @@
 ---
-title: "Docker Compose 安装"
-linkTitle: "Docker Compose 安装"
-weight: 2
+sidebar_position: 2
 edition: ce
-aliases:
-- /zh/docs/quickstart/docker-compose/
-description: >
-  使用 [Docker Compose](https://docs.docker.com/compose/) 快速部署 Cloudpods CMP 多云管理版本
 ---
 
-<!-- ## 前提
+# Docker Compose 快速安装
 
-{{% alert title="注意" color="warning" %}}
+使用 [Docker Compose](https://docs.docker.com/compose/) 快速部署 Cloudpods CMP 多云管理版本
+
+## 前提
+
+:::tip 注意
 该方案通过 Docker Compose 部署 Cloudpods 多云管理版本，该方式部署的是 All in One 环境，即所有的多云管理服务都使用容器运行在一个节点。
 
 该部署方法仅适用于多云管理功能的使用，比如管理公有云(aws, 阿里云, 腾讯云等)或者其它私有云(zstack, openstack 等)，无法使用内置私有云相关功能(因为内置私有云需要节点上面安装配置 qemu, openvswitch 等各种虚拟化软件)。
 
-另外 VMWare 目前也无法使用 Docker Compose 的方式管理，因为目前对 VMWare 的磁盘管理依赖依赖内核 nbd 模块，该模块无法在 docker compose 里面加载。如果是需要对 VMWare 管理，请使用 [Ocboot 安装](../../cmp/allinone-multicloud) 的方式部署。
+另外 VMWare 目前也无法使用 Docker Compose 的方式管理，因为目前对 VMWare 的磁盘管理依赖依赖内核 nbd 模块，该模块无法在 docker compose 里面加载。如果是需要对 VMWare 管理，请使用 [Ocboot 快速安装](./quickstart-ocboot) 的方式部署。
 
-如果需要使用内置私有云，请使用 [私有云安装](../../../quickstart/allinone-virt) 的方式部署。
-{{% /alert %}}
+如果需要使用内置私有云，请使用 [私有云](../virt) 的方式部署。
+:::
 
 ## 环境准备
 
@@ -32,9 +30,9 @@ description: >
 
 ### 安装配置 docker 
 
-{{% alert title="注意" color="warning" %}}
+:::tip 注意
 如果您的环境已经安装了新版本的 docker ，可以跳过改步骤。
-{{% /alert %}}
+:::
 
 下面以 CentOS 7 安装 docker 举例，如果是其他发行版请自行参考官方文档安装：[Install Docker Engine](https://docs.docker.com/engine/install/) 。
 
@@ -71,7 +69,7 @@ $ ls -alh docker-compose.yml
 $ docker compose up
 ```
 
-等服务启动完成后，就可以登陆 *https://<本机ip>* 访问前端服务，默认登陆用户密码为：admin 和 admin@123 。
+等服务启动完成后，就可以登陆 *https://本机ip* 访问前端服务，默认登陆用户密码为：admin 和 admin@123 。
 
 ## 操作说明
 
@@ -169,4 +167,3 @@ $ cd compose
 $ docker compose down
 $ docker compose up -d
 ```
- -->

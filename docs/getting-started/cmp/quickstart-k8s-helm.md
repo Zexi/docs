@@ -1,21 +1,18 @@
 ---
-title: "Kubernetes Helm 安装"
-linkTitle: "Kubernetes Helm 安装"
-weight: 3
-aliases:
-- /zh/docs/quickstart/k8s/
-description: >
-  使用 [Helm](https://helm.sh/) 在 Kubernetes 上部署 Cloudpods CMP 多云管理版本
+sidebar_position: 3
+edition: ce
 ---
 
-<!-- ## 前提
+# Kubernetes Helm 安装 
 
-{{% alert title="注意" color="warning" %}}
+使用 [Helm](https://helm.sh/) 在 Kubernetes 上部署 Cloudpods CMP 多云管理版本
+
+:::tip 注意
 该方案通过 Helm 在已有的 Kubernetes 集群上自动部署 Cloudpods 多云管理版本。
 
-该部署方法可能会因为不同 Kubernetes 发行版的 CSI，CNI 和 Ingress controller 配置不同出现兼容性错误，如果部署失败，又想快速体验产品功能，建议还是使用 [Ocboot 安装](../../cmp/allinone-multicloud) 的方式部署。
+该部署方法可能会因为不同 Kubernetes 发行版的 CSI，CNI 和 Ingress controller 配置不同出现兼容性错误，如果部署失败，又想快速体验产品功能，建议还是使用 [Ocboot 快速安装](./quickstart-ocboot) 的方式部署。
 
-另外 VMWare 目前也无法使用 Docker Compose 的方式管理，因为目前对 VMWare 的磁盘管理依赖依赖内核 nbd 模块，该模块无法在 docker compose 里面加载。如果是需要对 VMWare 管理，请使用 [Ocboot 安装](../../cmp/allinone-multicloud) 的方式部署。
+另外 VMWare 目前也无法使用 Docker Compose 的方式管理，因为目前对 VMWare 的磁盘管理依赖依赖内核 nbd 模块，该模块无法在 docker compose 里面加载。如果是需要对 VMWare 管理，请使用 [Ocboot 快速安装](./quickstart-ocboot) 的方式部署。
 
 已经验证过的Kubernetes发行版本包括：
 - 阿里云 ACK
@@ -24,7 +21,7 @@ description: >
 - AWS ECS
 
 该部署方法仅适用于多云管理功能的使用，比如管理公有云(aws, 阿里云, 腾讯云等)或者其它私有云(zstack, openstack 等)，无法使用内置私有云相关功能(因为内置私有云需要节点上面安装配置 qemu, openvswitch 等各种虚拟化软件) 。
-{{% /alert %}}
+:::
 
 ## 环境准备
 
@@ -50,11 +47,11 @@ $ git clone https://github.com/yunionio/ocboot
 $ cd charts/cloudpods
 ```
 
-{{% alert title="注意" color="warning" %}}
+:::tip 注意
 接下来会使用 helm 安装 cloudpods chart，在使用 `helm install` 的时候必须指定 `--namespace onecloud`，不能使用其他的 namespace。
 
 原因是 operator 服务还不支持把平台的服务部署到其他 namespace ，这个后续会改进。
-{{% /alert %}}
+:::
 
 ### 测试环境安装
 
@@ -306,4 +303,4 @@ $ kubectl logs -n onecloud $(kubectl get pods -n onecloud | grep operator | awk 
 
 # 查看 operator 日志当中有没有 requeuing 关键字，一般错误会反馈到这里
 $ kubectl logs -n onecloud $(kubectl get pods -n onecloud | grep operator | awk '{print $1}') | grep requeuing
-``` -->
+```

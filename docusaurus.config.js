@@ -11,6 +11,9 @@ const config = {
   title: 'Cloudpods',
   tagline: '开源、云原生的融合云平台',
   favicon: 'img/favicon.ico',
+  customFields: {
+    release_branch: 'release/3.10',
+  },
 
   // Set the production url of your site here
   url: 'https://www.cloudpods.org',
@@ -51,14 +54,16 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            // 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/yunionio/docs/tree/master',
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            // 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/yunionio/docs/tree/master',
         },
         theme: {
           customCss: './src/css/custom.css',
@@ -154,7 +159,7 @@ const config = {
       prism: {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
-        additionalLanguages: ['bash'],
+        additionalLanguages: ['bash', 'diff'],
       },
     }),
 };

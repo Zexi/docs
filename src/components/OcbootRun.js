@@ -11,11 +11,11 @@ export default function OcbootRun(props) {
             language="bash">
             {
               `# 直接部署，会从 registry.cn-beijing.aliyuncs.com 拉取容器镜像
-./run.py ${props.productVersion} <host_ip>
+$ ./run.py ${props.productVersion} <host_ip>
 
 # 如果遇到 pip 安装包下载过慢的问题，可以用 -m 参数指定 pip 源
 # 比如下面使用: https://mirrors.aliyun.com/pypi/simple/ 源
-./run.py -m https://mirrors.aliyun.com/pypi/simple/ ${props.productVersion} <host_ip>`
+$ ./run.py -m https://mirrors.aliyun.com/pypi/simple/ ${props.productVersion} <host_ip>`
             }
           </CodeBlock>
         </TabItem>
