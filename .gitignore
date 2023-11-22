@@ -40,3 +40,6 @@ _output
 *.pyc
 __pycache__
 data/
+
+# docusaurus
+.docusaurus/
