@@ -13,6 +13,7 @@ const config = {
   favicon: 'img/favicon.ico',
   customFields: {
     release_branch: 'release/3.10',
+    release_version: 'v3.10.7',
   },
 
   // Set the production url of your site here
