@@ -2,35 +2,36 @@
 sidebar_position: 1
 ---
 
-# 计算节点 Host 服务问题排查
+# Troubleshooting Host Service Issues on Computing Nodes
 
-Host服务可能因为各种原因启动失败，现象为Host服务重启之后，在云平台宿主机列表，宿主机的状态一直为离线。
+The Host service may fail to start for various reasons, and the symptom is that after the Host service is restarted, the node's status remains offline in the cloud platform host list.
 
-本文介绍一般的排查问题的思路。
+This article introduces the general approach to troubleshooting this issue.
 
-## Host服务对应容器Pod介绍
+## Introduction to the Pod Corresponding to the Host Service
 
-首先，我们需要了解Host服务对应的Pod。
+Firstly, we need to understand the Pod corresponding to the Host service.
 
-Host服务由k8s的onecloud命名空间下的Daemonset default-host定义，在每个节点上都会运行一个名为 default-host-xxxxx 的容器，其中 xxxxx 为随机的字符串。
+The Host service is defined by the Daemonset default-host in the onecloud namespace of K8s, and a container named default-host-xxxxx will run on each node, where xxxxx is a random string.
 
-default-host pod中有三个容器：
+There are three containers in the default-host pod:
 
-| 容器名称       | 功能                                                                           |
-| -------------- | ------------------------------------------------------------------------------ |
-| host           | Host服务的主服务进程，实现和控制器的通信，控制qemu虚拟机进程，管理存储和网络   |
-| ovn-controller | ovn在每个节点的控制进程，从ovn-northd维护的数据库同步节点配置信息，并下发到ovs |
-| sdnagent       | 实现经典网络的安全组和流控，VPC网络辅助ovn-controller实现VPC网络功能           |
+| Container Name | Description |
+| --- | --- |
+| host | The main service process of the Host service, which implements communication with the controller, controls the qemu virtual machine process, and manages storage and networking. |
+| ovn-controller | The control process of ovn on each node, which synchronizes node configuration information from the database maintained by ovn-northd, and issues it to OVS. |
+| sdnagent | Implements classic network security group and flow control, and assists ovn-controller in achieving VPC network functions. |
 
-## 定位宿主机的host容器
+## Locating the Host Container on the Computing Node
 
-通过如下命里找到在指定宿主机上运行的Host容器
+Locate the Host container running on the specified computing node using the following command:
 
 ```bash
 kubectl -n onecloud get pods -o wide | grep <ip_of_host>
 ```
 
-例如：
+For example:
+
 ```bash
 # kubectl -n onecloud get pods -o wide | grep office-03-host01
 default-host-xc2t5                                  3/3     Running            0          4h7m    192.168.222.3     office-03-host01           <none>           <none>
@@ -39,127 +40,126 @@ default-host-image-cql69                            1/1     Running            1
 default-telegraf-q8fl9                              2/2     Running            40         128d    192.168.222.3     office-03-host01           <none>           <none>
 ```
 
-这几个Pod的功能解释如下：
+The functions of these Pods are explained as follows:
 
-| Pod                         | 说明                                                                |
+| Pod                         | Description |
 | --------------------------- | ------------------------------------------------------------------- |
-| default-host-xxxxx          | DaemonSet default-host 的pod                                        |
-| default-host-deployer-xxxxx | DaemonSet default-host-deployer 的pod，实现虚拟机磁盘的初始化和识别 |
-| default-host-image-xxxxx    | DaemonSet default-host-image 的pod，实现本地虚拟机磁盘的读取        |
-| default-telegraf-xxxxx      | DaemonSet default-telegraf 的pod，实现宿主机的监控数据采集          |
+| default-host-xxxxx          | The pod of DaemonSet default-host. |
+| default-host-deployer-xxxxx | The pod of DaemonSet default-host-deployer, which initializes and identifies the virtual machine disk. || default-host-image-xxxxx    | Pod of the DaemonSet default-host-image, responsible for reading local virtual machine disks |
+| default-telegraf-xxxxx      | Pod of the DaemonSet default-telegraf, responsible for collecting monitoring data from the host machine |
 
-## 重启Host服务
+## Restarting the Host service
 
-有时候，重启就能解决问题，重启host服务只需要删除对应的pod，k8s会立即重建对应pod，实现host服务的重启.
+Sometimes restarting the service can solve problems. Restarting the host service only requires deleting the corresponding pod, and Kubernetes will immediately rebuild the corresponding pod to achieve the restart of the host service.
 
 ```bash
 kubectl -n onecloud delete pods default-host-xxxxx
 ```
 
-## 查看Host服务的日志
+## Checking the Host service logs
 
-采用如下命令查看Host服务的日志。由于host pod中有三个容器，因此需要用 -c 参数指定容器（-c host）。
+Use the following command to view Host service logs. Since there are three containers in the host pod, the -c parameter needs to be used to specify the container (-c host).
 
 ```bash
-# 查看 host 服务本次启动所有的日志
+# View all logs for host services enabled in this session
 $ kubectl -n onecloud logs default-host-xxxxx -c host
 
-# 查看从过去10分钟开始（--since 10m）的host容器的日志，并且不退出（-f），持续输出日志到控制台
+# View logs for the host container from the past 10 minutes (--since 10m), do not exit (-f), and continuously display logs on the console
 $ kubectl -n onecloud logs default-host-xxxxx -c host --since 10m -f
 ```
 
-Host服务在启动时会执行如下检查：
+The Host service performs the following checks when starting:
 
-* 设置和优化内核参数，例如io调度器参数
-* 检查关键软件，例如qemu，内核nbd模块，openvswitch等
-* 初始化并配置网络
-* 初始化并配置存储
+* Setting and optimizing kernel parameters, such as io scheduler parameters
+* Checking critical software, such as qemu, the kernel nbd module, openvswitch, etc.
+* Initializing and configuring the network
+* Initializing and configuring storage
 * ...
 
-在每一步都可能出错，此时可以通过查看输出日志，定位原因。
+Errors can occur at each step, and the output log can be viewed to identify the cause.
 
-## 常见问题
+## Common problems
 
-### 宿主机安装Host服务完成后，默认处于禁用状态，需要启用后使用。宿主机启用方法如下：
+### After installing the Host service on the host machine, it is disabled by default and needs to be enabled before use. The method to enable the host machine is as follows:
 
-- 在云管平台的宿主机列表中启用该宿主机；
+- Enable the host machine in the host list of the cloud management platform.
 
-- 在控制节点使用climc命令启用该宿主机；
+- Use the climc command to enable the host machine on the control node.
 
     ```bash
     $ climc host-enable id
     ```
 
-### Host服务为什么会变成离线？
+### Why does the Host service become offline?
 
-region的HostPingDetectionTask将超过3分钟未收到ping的host服务置为offline，并将宿主机上的虚拟机状态设置为unknown。
+The HostPingDetectionTask in the region will set the host service that has not received a ping for more than three minutes to offline and set the virtual machine status on the host machine to unknown.
 
-### 宿主机的Host服务启动失败，且报错“Fail to get network info：no networks”，该怎么解决？
+### How to solve the problem of Host service startup failure on the host machine and a report error "Fail to get network info：no networks",?
 
-该问题一般是没有为宿主机网卡的IP地址注册IP子网，云平台根据此信息判断宿主机对接的二层网络信息。为解决这个问题，需要在云管平台为宿主机创建一个包含宿主机IP地址的IP子网或使用climc命令在控制节点创建一个网络。
+This problem is generally caused by not registering an IP subnet for the IP address of the host machine's network card. The cloud platform judges the second-layer network information docked by the host machine based on this information. To solve this problem, you need to create an IP subnet that contains the host machine's IP address on the cloud management platform or use the climc command to create a network on the control node.
 
 ```bash
 $ climc network-create bcast0 host02  10.168.222.226  10.168.222.226 24 --gateway 10.168.222.1
 ```
-### 宿主机MAC改变会导致Host服务离线，需要更改宿主机在平台注册的MAC地址，具体步骤如下
+### Changing the MAC of the host machine will cause the Host service to go offline, how to change the MAC address registered with the platform for the host machine?
 
-- 例如，宿主机IP地址为100.91.1.22，其MAC从18:9b:a5:81:4f:17变为18:9b:a5:81:4f:16
+- For example, the IP address of the host machine is 100.91.1.22, and its MAC changes from 18: 9b: a5: 81: 4f:17 to 18: 9b: a5: 81: 4f:16
 
     ```bash
-    # 092231af-eebc-456f-8a21-3ab7c944f20c为宿主机id，97e29a73-6615-4d5b-8b67-96bb13b80b90为宿主机所在二层网络的id
+    # 092231af-eebc-456f-8a21-3ab7c944f20c is the host id, and 97e29a73-6615-4d5b-8b67-96bb13b80b90 is the id of the second-layer network where the host is located
     $ climc host-remove-netif 092231af-eebc-456f-8a21-3ab7c944f20c 18:9b:a5:81:4f:17
     $ climc host-add-netif --ip 100.91.1.22 092231af-eebc-456f-8a21-3ab7c944f20c 97e29a73-6615-4d5b-8b67-96bb13b80b90 18:9b:a5:81:4f:16 0
     ```
 
-### 宿主机网卡刚开始没有做bonding，做了bonding之后，如何不重启宿主机变更配置？
+### The host machine's network card was not bonded at the beginning, and after bonding, how to change the configuration without restarting the host machine?
 
-假设刚开始宿主机用物理网卡 eth0 作为管理网网卡接入云平台，其IP地址为192.168.201.20。对应/etc/yunion/host.conf配置为：
+Assuming that the host machine uses the physical network card eth0 as the management network card to access the cloud platform, and its IP address is 192.168.201.20. Corresponding to /etc/yunion/host.conf, the configuration is:
 
 ```yaml
 networks:
 - eth0/br0/192.168.201.20
 ```
 
-云平台部署完成后，管理员将 eth0 和 eth1 绑定设置为 bond0，IP地址仍然是 192.168.201.20，则需要修改 /etc/yunion/host.conf 配置为：
+After the cloud platform is deployed, the administrator binds eth0 and eth1 and sets them as bond0. The IP address is still 192.168.201.20. In this case, the /etc/yunion/host.conf needs to be modified as follows:
 
 ```yaml
 networks:
 - bond0/br0/192.168.201.20
+```- bond0/br0/192.168.201.20
 ```
-
-由于openvswitch会记忆配置在ovsdb中，此时，网桥br0已经将eth0加入，如果不做配置，则br0依然还会将eth0加入网桥。因此需要手动将eth0从br0删除：
+Due to the fact that openvswitch remembers the configuration in ovsdb, at this point, the bridge br0 has already added eth0. If no configuration is made, br0 will still add eth0 to the bridge. Therefore, eth0 needs to be manually removed from br0:
 
 ```bash
 ovs-vsctl del-port br0 eth0
 ```
 
-此时，为了让配置生效，比较简便的方法是重启宿主机。
+At this point, in order for the configuration to take effect, a more convenient method is to restart the host.
 
-如果宿主机不方便重启，则需要手动执行以下操作：
+If it is inconvenient to restart the host, the following steps need to be executed manually:
 
-1、拉起bond0
+1. Start bond0
 
-首先确保bond0的配置(/etc/sysconfig/network-scripts/ifcfg-bond0,ifcfg-eth0,ifcfg-eth1)已经正确配置。重启网络：
+First, make sure that the configuration of bond0 (/etc/sysconfig/network-scripts/ifcfg-bond0, ifcfg-eth0, ifcfg-eth1) is correct. Restart the network:
 
 ```bash
 systemctl restart network
 ```
 
-2、清除bond0上的IP地址
+2. Clear the IP address on bond0
 
-重启网络后，IP地址配置在bond0上，同时br0上也有同样的IP地址。则需要清除bond0的IP：
+After restarting the network, the IP address is configured on bond0, and the same IP address is also on br0. Therefore, the IP on bond0 needs to be cleared:
 
 ```bash
 ifconfig bond0 0
 ```
 
-3、将eth0从br0移除，并将bond0加入br0
+3. Remove eth0 from br0 and add bond0 to br0
 
 ```bash
 ovs-vsctl del-port br0 eth0
 ovs-vsctl add-port br0 bond0
 ```
 
-### 存储介质识别不准，例如机械盘识别成固态
+### Incorrect recognition of storage media, such as mechanical disks being recognized as solid state disks
 
-例如用户使用SSD 做lvmcache 等情况，可能造成宿主机本地存储介质识别不准，可自行前往对应宿主机->存储->对应存储介质 修改属性，选择介质类型修改即可。
+For example, if a user uses an SSD as an lvmcache, it may cause incorrect recognition of the local storage media on the host. You can go to the corresponding host -> storage -> corresponding storage media to modify the properties and select the media type to modify it.
