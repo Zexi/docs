@@ -3,43 +3,43 @@ sidebar_position: 2
 edition: ce
 ---
 
-# 高可用安装 
+# Highly Available Installation 
 
-使用 [ocboot](https://github.com/yunionio/ocboot) 部署工具高可用安装 Cloudpods 服务，更符合生产环境的部署需求。
+Use [ocboot](https://github.com/yunionio/ocboot) deployment tool for high availability installation of Cloudpods service, which is more in line with the deployment needs of production environment.
 
-## 环境准备
+## Environment Preparation
 
 import HAEnv from '../_parts/_ha-env.mdx';
 
 <HAEnv />
 
-## 开始安装
+## Getting Started
 
-### 下载 ocboot
+### Download ocboot
 
 import OcbootClone from '@site/src/components/OcbootClone';
 
 <OcbootClone />
 
-### 编写部署配置
+### Write Deployment Configuration
 
 import OcbootConfigHA from '@site/src/components/OcbootConfigHA';
 
 <OcbootConfigHA productVersion='FullStack' />
 
-### 开始部署
+### Begin Deployment
 
 ```bash
 $ ./ocboot.py install ./config-k8s-ha.yml
 ```
 
-等待部署完成后，就可以使用浏览器访问 https://10.127.190.10 (VIP), 输入用户名 `admin` 和密码 `admin@123`，进入前端。
+After the deployment is complete, you can use a browser to access https://10.127.190.10 (VIP), enter the username `admin` and password `admin@123` to enter the front end.
 
-另外部署完成后，可以给已有集群添加节点，参考文档：[添加计算节点](../virt/host)，注意这里添加节点的控制节点 ip 不要用 vip ，只能用第1个控制节点的实际 ip ，因为 vip 有可能漂移到其他节点上，但通常只有第1个节点配置了 ssh 免密登陆登陆其他节点的权限，用其他控制节点会导致 ssh 登陆不上。
+In addition, after the deployment is complete, you can add nodes to the existing cluster. Refer to the document: [Add a compute node](../virt/host). Note that when adding a node, do not use vip for the control node IP. Only the actual IP of the first control node can be used. Because the vip may float to other nodes, only the first node usually has the permission to log in other nodes via ssh without a password. Using other control nodes may cause ssh login failure.
 
-## 常见问题
+## FAQ
 
-### 1. 如何手动重新添加控制控制节点？
+### 1. How to manually re-add a control node?
 
 import HAFAQReadd from '../_parts/_ha-faq-readd.mdx';
 

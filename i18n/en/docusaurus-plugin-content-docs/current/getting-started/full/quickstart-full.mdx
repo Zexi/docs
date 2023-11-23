@@ -3,44 +3,44 @@ sidebar_position: 1
 edition: ce
 ---
 
-# Ocboot 快速安装
+# Quick Installation via Ocboot
 
-使用 [ocboot](https://github.com/yunionio/ocboot) 部署工具以 All in One 的方式快速部署融合云版本。
+Use the [ocboot](https://github.com/yunionio/ocboot) deployment tool to quickly deploy Hybrid Cloud in an All in One manner.
 
 
-:::tip 注意
-本章内容是通过部署工具快速搭建 Cloudpods 服务，如果想在生产环境部署高可用集群请参考: [高可用安装](./ha-ce) 。
+:::tip Note
+The content in this chapter is used to quickly set up Cloudpods with the deployment tool. If you want to deploy a high availability cluster in a production environment, please refer to: [High Availability Installation] (./ha-ce).
 :::
 
-## 环境准备
+## Environment Preparation
 
-### 机器配置要求
+### Machine Configuration Requirements
 
 import OcbootEnv from '../_parts/_quickstart-ocboot-env.mdx';
 
 <OcbootEnv />
 
-## 安装ansible和git
+## Install Ansible and Git
 
 import OcbootAnsible from '../_parts/_quickstart-ocboot-ansible.mdx';
 
 <OcbootAnsible />
 
-## 安装Cloudpods
+## Install Cloudpods
 
 import OcbootInstallCloudpods from '../_parts/_quickstart-ocboot-install-cloudpods.mdx';
 
 <OcbootInstallCloudpods productVersion="full" />
 
-## 开始使用Cloudpods
+## Getting Started with Cloudpods
 
-### 创建第一台私有云虚拟机
+### Create the First Private Cloud Virtual Machine
 
 import UseVirt from '../_parts/_quickstart-use-virt.mdx';
 
 <UseVirt />
 
-### 导入公有云或者其它私有云平台资源
+### Import Public Cloud or Other Private Cloud Platform Resources
 
 import UseCMP from '../_parts/_quickstart-use-cmp.mdx';
 
@@ -48,28 +48,28 @@ import UseCMP from '../_parts/_quickstart-use-cmp.mdx';
 
 ## FAQ
 
-### 1. 在 All in One 部署完成后宿主机列表没有宿主机？
+### 1. After the All in One deployment is complete, there is no host in the host list?
 
 import FAQVirtHost from '../_parts/_quickstart-faq-virt-host.md';
 
 <FAQVirtHost />
 
-### 2. 找不到虚拟机界面？
+### 2. Cannot find the virtual machine interface?
 
 import FAQVirtVM from '../_parts/_quickstart-faq-virt-vm.md';
 
 <FAQVirtVM />
 
-### 3. 为什么修改了节点的 hostname ，服务启动不了了？
+### 3. Why does the service fail to start after changing the hostname of the node?
 
-Cloudpods 底层使用了 Kubernetes 管理节点，Kubernetes 节点名称依赖 hostname，改了 hostname 会导致节点无法注册到 Kubernetes 集群，所以不要修改 hostname ，如果修改了，请改之前的名称，服务就会自动恢复了。
+Cloudpods uses Kubernetes to manage nodes at the underlying layer, and the Kubernetes node name depends on the hostname. Changing the hostname will cause the node to fail to register with the Kubernetes cluster, so do not modify the hostname. If modified, change back to the original name and the service will automatically recover.
 
-### 4. 如何重装?
+### 4. How to reinstall?
 
 import FAQReset from '../_parts/_quickstart-faq-reset.md';
 
 <FAQReset />
 
-### 5. 其它问题？
+### 5. Other issues?
 
-其它问题欢迎在 Cloudpods github issues 界面提交: [https://github.com/yunionio/cloudpods/issues](https://github.com/yunionio/cloudpods/issues) , 我们会尽快回复。
+Other issues can be submitted through the Cloudpods GitHub issues page: [https://github.com/yunionio/cloudpods/issues](https://github.com/yunionio/cloudpods/issues), we will respond as soon as possible.
