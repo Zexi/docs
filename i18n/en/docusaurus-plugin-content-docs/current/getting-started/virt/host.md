@@ -185,4 +185,4 @@ $ ssh root@10.20.30.254
 
 ## 常见问题排查
 
-计算节点常见问题排查请参考：[Host服务问题排查](../../function_principle/onpremise/host/troubleshooting/)
+计算节点常见问题排查请参考：[Host服务问题排查](../../faq/virt/host)

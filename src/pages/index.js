@@ -23,7 +23,7 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="/docs/3.10/getting-started/">
+            to="/docs/getting-started/">
             <Translate id="homepage.getStarted">快速开始</Translate>
           </Link>
         </div>

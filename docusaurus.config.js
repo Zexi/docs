@@ -48,7 +48,7 @@ const config = {
           versions: {
             current: {
               label: '3.10',
-              path: '3.10',
+              path: '',
             },
           },
           sidebarPath: './sidebars.js',
@@ -116,11 +116,11 @@ const config = {
         style: 'dark',
         links: [
           {
-            title: 'Docs',
+            title: '文档',
             items: [
               {
                 label: 'Tutorial',
-                to: '/docs/intro',
+                to: '/docs/introduction',
               },
             ],
           },
@@ -144,10 +144,10 @@ const config = {
           {
             title: 'More',
             items: [
-              {
-                label: 'Blog',
-                to: '/blog',
-              },
+              // {
+              //   label: 'Blog',
+              //   to: '/blog',
+              // },
               {
                 label: 'GitHub',
                 href: 'https://github.com/yunionio/cloudpods',
