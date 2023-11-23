@@ -3,40 +3,40 @@ edition: ce
 sidebar_position: 1
 ---
 
-# Ocboot 快速安装
+# Quick Installation via Ocboot 
 
-使用 [ocboot](https://github.com/yunionio/ocboot) 部署工具以 All in One 的方式部署 Cloudpods CMP 多云管理版本。
+Use [ocboot](https://github.com/yunionio/ocboot) deployment tool to deploy Cloudpods CMP multi-cloud management version in All in One mode.
 
-## 前提
+## Prerequisites
 
-:::tip 注意
-本章内容是通过部署工具快速搭建 Cloudpods 服务，如果想在生产环境部署高可用集群请参考: [高可用安装](./ha-ce) 。
+:::tip Note
+The content in this chapter is to quickly deploy Cloudpods service through the deployment tool. If you want to deploy a highly available cluster in a production environment, please refer to: [High Availability Installation](./ha-ce).
 :::
 
-## 环境准备
+## Environment Preparation
 
-### 机器配置要求
+### Machine Configuration Requirements
 
 import OcbootEnv from '../_parts/_quickstart-ocboot-env.mdx';
 
 <OcbootEnv />
 
-## 安装 ansible 和 git
+## Install Ansible and Git
 
 import OcbootAnsible from '../_parts/_quickstart-ocboot-ansible.mdx';
 
 <OcbootAnsible />
 
-## 安装 Cloudpods
+## Install Cloudpods
 
 import OcbootInstallCloudpods from '../_parts/_quickstart-ocboot-install-cloudpods.mdx';
 
 <OcbootInstallCloudpods productVersion="cmp" />
 
 
-## 开始使用 Cloudpods
+## Start using Cloudpods
 
-### 导入公有云或者其它私有云平台资源
+### Import public cloud or other private cloud platform resources
 
 import UseCMP from '../_parts/_quickstart-use-cmp.mdx';
 
@@ -45,16 +45,16 @@ import UseCMP from '../_parts/_quickstart-use-cmp.mdx';
 ## FAQ
 
 
-### 1. 如何重装?
+### 1. How to reinstall?
 
 import FAQReset from '../_parts/_quickstart-faq-reset.md';
 
 <FAQReset />
 
-### 2. 创建云账号的时候没有想要管理的云平台?
+### 2. When creating a cloud account, there is no desired cloud platform to manage?
 
-请参考 feature-config  ............... TODO
+Please refer to feature-config  ............... TODO
 
-### 3. 其它问题？
+### 3. Other questions?
 
-其它问题欢迎在 Cloudpods github issues 界面提交: [https://github.com/yunionio/cloudpods/issues](https://github.com/yunionio/cloudpods/issues) , 我们会尽快回复。
+Other questions are welcome to be submitted on the Cloudpods github issues page: [https://github.com/yunionio/cloudpods/issues](https://github.com/yunionio/cloudpods/issues), we will reply as soon as possible.
