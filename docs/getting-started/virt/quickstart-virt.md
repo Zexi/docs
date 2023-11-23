@@ -32,7 +32,7 @@ import OcbootInstallCloudpods from '../_parts/_quickstart-ocboot-install-cloudpo
 
 <OcbootInstallCloudpods productVersion="virt" />
 
-## 开始使用Cloudpods
+## 开始使用 Cloudpods
 
 ### 创建第一台私有云虚拟机
 
