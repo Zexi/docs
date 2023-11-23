@@ -7,6 +7,8 @@ import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Heading from '@theme/Heading';
 import styles from './index.module.css';
 
+import Translate, { translate } from '@docusaurus/Translate';
+
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   return (
@@ -15,12 +17,14 @@ function HomepageHeader() {
         <Heading as="h1" className="hero__title">
           {siteConfig.title}
         </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
+        <p className="hero__subtitle">
+          <Translate id="homepage.subtitle">开源、云原生的融合云平台</Translate>
+        </p>
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
             to="/docs/3.10/getting-started/">
-            快速开始️
+            <Translate id="homepage.getStarted">快速开始</Translate>
           </Link>
         </div>
       </div>

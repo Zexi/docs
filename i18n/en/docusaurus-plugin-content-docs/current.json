@@ -14,5 +14,25 @@
   "sidebar.tutorialSidebar.category.Tutorial - Extras": {
     "message": "Tutorial - Extras",
     "description": "The label for category Tutorial - Extras in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.安装部署": {
+    "message": "安装部署",
+    "description": "The label for category 安装部署 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.私有云": {
+    "message": "私有云",
+    "description": "The label for category 私有云 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.多云管理": {
+    "message": "多云管理",
+    "description": "The label for category 多云管理 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.融合云": {
+    "message": "融合云",
+    "description": "The label for category 融合云 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.其他": {
+    "message": "其他",
+    "description": "The label for category 其他 in sidebar tutorialSidebar"
   }
 }

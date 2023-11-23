@@ -9,7 +9,7 @@ import { themes as prismThemes } from 'prism-react-renderer';
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Cloudpods',
-  tagline: '开源、云原生的融合云平台',
+  // tagline: '开源、云原生的融合云平台',
   favicon: 'img/favicon.ico',
   customFields: {
     release_branch: 'release/3.10',
