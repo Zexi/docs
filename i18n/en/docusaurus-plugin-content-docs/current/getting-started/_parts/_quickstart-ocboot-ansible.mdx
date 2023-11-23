@@ -1,13 +1,13 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-首先需要安装ansible和git，ansible版本要求最低2.9.27，其中2.11.12测试较多。
+First, you need to install ansible and git. The minimum required version of Ansible is 2.9.27, with version 2.11.12 being more thoroughly tested.
 
 <Tabs>
   <TabItem value="CentOS 7" label="CentOS 7" default>
 
 ```bash
-# 本地安装 ansible 和 git
+# Install ansible and git locally
 $ yum install -y epel-release git python3-pip
 $ python3 -m pip install --upgrade pip setuptools wheel
 $ python3 -m pip install --upgrade ansible
@@ -17,7 +17,7 @@ $ python3 -m pip install --upgrade ansible
 
   <TabItem value="Debian 10/11" label="Debian 10/11">
 
-如果提示`locale`相关的报错，请先执行：
+If you receive an error related to `locale`, please execute:
 
 ```bash
 if ! grep -q '^en_US.UTF-8' /etc/locale.gen; then
@@ -29,31 +29,32 @@ fi
 ```
 
 ```bash
-# 本地安装 ansible 和 git
+# Install ansible and git locally
 $ apt install -y git python3-pip
 $ python3 -m pip install --upgrade pip setuptools wheel
 $ python3 -m pip install --upgrade ansible
 ```
-备注：已知在`debian 11`环境，如果`/proc/cmdline`里找不到启动选项 `systemd.unified_cgroup_hierarchy=0`，ocboot会自动配置相关的`GRUB`选项，重建启动参数，并重启操作系统，以便 `k8s` 能够正常启动。
+
+Note: In the `Debian 11` environment, if systemd.unified_cgroup_hierarchy=0 is not found in `/proc/cmdline`, ocboot will automatically configure the relevant GRUB options, rebuild the startup parameters, and restart the operating system so that `k8s` can be launched normally.
 
   </TabItem>
 
   <TabItem value="Kylin V10" label="Kylin V10">
 ```bash
-# 本地安装 ansible 和 git
+# Install ansible and git locally
 $ yum install -y git python3-pip
 $ python3 -m pip install --upgrade pip setuptools wheel
 $ python3 -m pip install --upgrade ansible
 ```
   </TabItem>
 
-  <TabItem value="其它操作系统" label="其它操作系统" >
+  <TabItem value="Other Operating Systems" label="Other Operating Systems" >
 
 ```bash
-# 本地安装 ansible
+# Install ansible locally
 $ python3 -m pip install --upgrade pip setuptools wheel
 $ python3 -m pip install --upgrade ansible
 ```
+
   </TabItem>
 </Tabs>
-

@@ -1,5 +1,5 @@
-执行下面的步骤进行重装:
+Follow the steps below to reinstall:
 
-1. 执行 `kubeadm reset -f` 删除 kubernetes 集群
+1. Execute `kubeadm reset -f` to delete the Kubernetes cluster.
 
-2. 重新运行 ocboot 的 run.py 脚本
+2. Run the `run.py` script of ocboot again.

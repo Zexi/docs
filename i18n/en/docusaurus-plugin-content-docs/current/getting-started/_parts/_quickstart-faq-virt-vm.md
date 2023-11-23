@@ -1,18 +1,18 @@
-All in One 部署的节点会部署 Cloudpods host 计算服务，作为宿主机，具有创建和管理私有云虚拟机的能力。没有虚拟机界面应该是 Cloudpods 环境中没有启用宿主机。
+The nodes deployed by All in One will deploy the Cloudpods host computing service as the host machine, which has the ability to create and manage private cloud virtual machines. If there is no virtual machine interface, it means that the host machine is not enabled in the Cloudpods environment.
 
-请到 `管理后台` 界面，点击 `主机/基础资源/宿主机` 查看宿主机列表，启用相应的宿主机，刷新界面就会出现虚拟机界面。
+Please go to the `Management Console` interface, click `Host/Basic Resources/Host` to view the host list, enable the corresponding host, and refresh the interface to display the virtual machine interface.
 
 :::note
-如果要使用 Cloudpods 私有云虚拟机，并且宿主机是 CentOS 7 的发行版。需要宿主机使用 Cloudpods 编译的内核，可使用以下命令查看宿主机是否使用 Cloudpods 内核(包含 yn 关键字)。
+If you want to use Cloudpods private cloud virtual machines, and the host machine is a distribution of CentOS 7, the host machine needs to use the kernel compiled by Cloudpods. You can use the following command to check if the host machine is using the Cloudpods kernel (containing the keyword "yn").
 
 ```bash
-# 查看是否使用 yn 内核
+# Check whether to use the yn kernel
 uname -a | grep yn
 Linux office-controller 3.10.0-1160.6.1.el7.yn20201125.x86_64
 
-# 如果内核不是带有 yn 关键字的版本，可能是第一次使用 ocboot 安装，重启即可进入 yn 内核
+# If the kernel version does not contain the keyword "yn", it may be the first time the ocboot is installed, and you can enter the yn kernel by restarting.
 reboot
 ```
 :::
 
-![宿主机](../images/host.png)
+![Host machine](../images/host.png)
