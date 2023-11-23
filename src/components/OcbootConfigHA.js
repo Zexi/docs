@@ -1,29 +1,15 @@
 import CodeBlock from '@theme/CodeBlock';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
-export default function OcbootConfigHA(props) {
+function getConfig(productVersion) {
   const { siteConfig } = useDocusaurusContext();
-  return (
-    <div>
-      <CodeBlock language='bash'>
-        {
-          `# 填充变量，生成配置
-DB_IP="10.127.190.11"
-DB_PORT=3306
-DB_PSWD="0neC1oudDB#"
-DB_USER=root
-
-K8S_VIP=10.127.190.10
-PRIMARY_INTERFACE="eth0"
-PRIMARY_IP=10.127.90.101
-
-MASTER_1_INTERFACE="eth0"
-MASTER_1_IP=10.127.90.102
-MASTER_2_INTERFACE="eth0"
-MASTER_2_IP=10.127.90.103
-
-cat > config-k8s-ha.yml <<EOF
-# primary_master_node 表示运行 k8s 和 Cloudpods 服务的节点
+  let shouldAsHost = () => {
+    if (productVersion === 'CMP') {
+      return 'false'
+    }
+    return 'true'
+  }
+  const content = `# primary_master_node 表示运行 k8s 和 Cloudpods 服务的节点
 primary_master_node:
   # ansible ssh 登录 ip
   hostname: $PRIMARY_IP
@@ -50,16 +36,15 @@ primary_master_node:
   # k8s 控制节点的端口
   controlplane_port: "6443"
   # 该节点作为 Cloudpods 私有云计算节点，如果不想让控制节点作为计算节点，可以设置为 false
-  as_host: true
+  as_host: ${shouldAsHost()}
   # 虚拟机强行作为 Cloudpods 内置私有云计算节点（默认为 false）。开启此项时，请确保 as_host: true
-  as_host_on_vm: true
+  as_host_on_vm: ${shouldAsHost()}
   # 产品版本，从 [] 选择一个，FullStack 会安装融合云，CMP 安装多云管理版本，Edge 安装私有云
-  product_version: '${props.productVersion}'
+  product_version: '${productVersion}'
   # 设置镜像仓库，如果待部署的机器处于海外，可以用 dockerhub 的镜像仓库：docker.io/yunion
   image_repository: registry.cn-beijing.aliyuncs.com/yunionio
   # 启用高可用模式
   high_availability: true
-  use_ee: false
   # 使用 minio 作为后端虚拟机镜像存储
   enable_minio: true
   insecure_registries:
@@ -76,7 +61,9 @@ master_nodes:
   # 作为 K8s 和 Cloudpods 控制节点
   as_controller: true
   # 该节点作为 Cloudpods 私有云计算节点，如果不想让控制节点作为计算节点，可以设置为 false
-  as_host: true
+  as_host: ${shouldAsHost()}
+  # 虚拟机强行作为 Cloudpods 内置私有云计算节点（默认为 false）。开启此项时，请确保 as_host: true
+  as_host_on_vm: ${shouldAsHost()}
   # 从 primary 节点同步 ntp 时间
   ntpd_server: "$PRIMARY_IP"
   # 打开 keepalived HA
@@ -87,7 +74,34 @@ master_nodes:
     host_networks: "$MASTER_1_INTERFACE/br0/$MASTER_1_IP"
   - user: root
     hostname: "$MASTER_2_IP"
-    host_networks: "$MASTER_2_INTERFACE/br0/$MASTER_2_IP"
+    host_networks: "$MASTER_2_INTERFACE/br0/$MASTER_2_IP"`
+  return content;
+}
+
+export default function OcbootConfigHA(props) {
+  const productVersion = props.productVersion;
+  const config = getConfig(props.productVersion);
+  return (
+    <div>
+      <CodeBlock language='bash'>
+        {
+          `# 填充变量，生成配置
+DB_IP="10.127.190.11"
+DB_PORT=3306
+DB_PSWD="0neC1oudDB#"
+DB_USER=root
+
+K8S_VIP=10.127.190.10
+PRIMARY_INTERFACE="eth0"
+PRIMARY_IP=10.127.90.101
+
+MASTER_1_INTERFACE="eth0"
+MASTER_1_IP=10.127.90.102
+MASTER_2_INTERFACE="eth0"
+MASTER_2_IP=10.127.90.103
+
+cat > config-k8s-ha.yml <<EOF
+${config}
 EOF`
         }
       </CodeBlock>

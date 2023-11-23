@@ -64,6 +64,10 @@ import FAQReset from '../_parts/_quickstart-faq-reset.md';
 
 <FAQReset />
 
-### 5. 其它问题？
+### 5. 如何添加更多的节点？
+
+参考文档 [添加计算节点](./host) 。
+
+### 6. 其它问题？
 
 其它问题欢迎在 Cloudpods github issues 界面提交: [https://github.com/yunionio/cloudpods/issues](https://github.com/yunionio/cloudpods/issues) , 我们会尽快回复。

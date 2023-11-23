@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 4
 edition: ce
 ---
 
@@ -25,7 +25,7 @@ import OcbootClone from '@site/src/components/OcbootClone';
 
 import OcbootConfigHA from '@site/src/components/OcbootConfigHA';
 
-<OcbootConfigHA productVersion='Edge' />
+<OcbootConfigHA productVersion='CMP' />
 
 ### 开始部署
 

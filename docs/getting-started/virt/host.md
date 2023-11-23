@@ -71,7 +71,6 @@ $ ./ocboot.py add-node 10.168.26.216 10.168.222.140
 # 其他选项，使用 '--help' 参考帮助
 $ ./ocboot.py add-node --help
 usage: ocboot.py add-node [-h] [--user SSH_USER] [--key-file SSH_PRIVATE_FILE] [--port SSH_PORT] [--node-port SSH_NODE_PORT]
-                          [--enable-host-on-vm]
                           FIRST_MASTER_HOST TARGET_NODE_HOSTS [TARGET_NODE_HOSTS ...]
 
 positional arguments:
