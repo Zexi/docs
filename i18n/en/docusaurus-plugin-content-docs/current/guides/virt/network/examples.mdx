@@ -2,59 +2,59 @@
 sidebar_position: 90
 ---
 
-# 典型网络配置
+# Typical Network Configuration
 
-本文介绍几种典型的私有云网络配置
+This article introduces several typical private cloud network configurations.
 
-## （单网口经典网络）计算节点单个网口，虚拟机使用多VLAN经典网络
+## (Single NIC Classic Network) computing node single NIC, virtual machine using Multi-VLAN classic network
 
-这种场景下，每个计算节点只有一个网口(可以为Bonding)，既做管理口，也做业务口。虚拟机之间的业务流量是由宿主机对接的三层交换机转发。
+In this scenario, each computing node only has one NIC (which can be Bonding) that serves both as a management port and a business port. The business traffic between virtual machines is forwarded by the host to the Layer 3 switch.
 
 import SingleportPNG from './singleport.png';
 
 <img src={SingleportPNG} width="400" />
 
-### VPC配置
+### VPC Configuration
 
-采用*Default* VPC
+Use *Default* VPC.
 
-### 二层网络配置
+### Layer-2 Network Configuration
 
-在*Default* VPC新建一个二层网络*bcast0*
+Create a layer-2 network *bcast0* in *Default* VPC.
 
-### IP子网配置
+### IP Subnet Configuration
 
-在二层网络*bcast0*创建至少2个IP子网，其中一个IP子网给宿主机管理口使用，需要包含宿主机的管理口IP。另外一个子网给虚拟机用。可以配置更多的IP子网给虚拟机使用，并且这些虚拟机用IP子网可以配置不同的VLAN ID（非1的VLAN ID）。这些IP子网的网关以及对应的VLAN都需要配置在物理机连接的三层交换机上。
+Create at least 2 IP subnets in the layer-2 network *bcast0*, one of which is used for the host management port and needs to include the IP of the host management port. The other subnet is used for the virtual machine. More IP subnets can be configured for virtual machines, and these virtual machines can be configured with different VLAN IDs (VLAN IDs other than 1). The gateway and corresponding VLAN of these IP subnets need to be configured on the Layer 3 switch connected to the physical machine.
 
-### 宿主机配置
+### Host Configuration
 
-宿主机的网口在交换机上需要配置为trunk模式，宿主机管理口*必须*采用默认VLAN ID。一般来说，默认VLAN ID 为 1。但目前交换机也支持为TRUNK口设置非1的VLAN ID，具体请参考交换机的配置手册。
+The host port on the switch needs to be configured in trunk mode, and the *default* VLAN ID must be used for the host management port. By default, the VLAN ID is 1. But currently, the switch also supports setting a VLAN ID other than 1 for the TRUNK port. Please refer to the switch configuration manual for details.
 
-宿主机host.conf的networks配置：
+The networks configuration of the host.conf file:
 
 ```yaml
 networks:
 - <host_ifname>/br0/<host_management_ip>
 ```
 
-例如:
+For example:
 
 ```yaml
 networks:
 - eth0/br0/10.168.20.2
 ```
 
-#### 宿主机管理口使用非1的VLAN ID，并且交换机不支持设置TRUNK口的默认VLAN ID，这种情况如何配置？
+#### How to configure if the host management port uses a VLAN ID other than 1 and the switch does not support setting the default VLAN ID for TRUNK port?
 
 import SingleportVlanPNG from "./singleportvlan.png";
 
 <img src={SingleportVlanPNG} width="400" />
 
-这种情况需要为宿主机设置一个VLAN子接口，宿主机使用这个VLAN子接口作为管理口，并且虚拟机交换机需要桥接到主接口上。下面以宿主机主接口为bond0，宿主机管理口的VLAN ID为3001为示例说明：
+A VLAN subinterface needs to be set up for the host, and the host uses this VLAN subinterface as the management port, and the virtual machine switch needs to be bridged to the main interface. Take the host main interface bond0 and the VLAN ID of the host management port 3001 as an example:
 
-1、在宿主机配置VLAN子接口 bond0.3001，配置如下：
+1. Configure VLAN subinterface bond0.3001 for the host, as follows:
 
-```
+```bash
 # /etc/sysconfig/network-scripts/ifcfg-bond0.3001
 VLAN=yes
 NAME=bond0.3001
@@ -65,7 +65,7 @@ DEFROUTE=yes
 ONBOOT=yes
 ```
 
-2. 修改/etc/yunion/host.conf，设置如下:
+2. Modify /etc/yunion/host.conf and set it as follows:
 
 ```yaml
 listen_interface: bond0.3001
@@ -73,71 +73,69 @@ networks:
 - bond0/br0/bcast0
 ```
 
-需要注意的是，这种配置下，虚拟机将不能使用和宿主机相同的VLAN ID（这里是3001)。
+Note that in this configuration, virtual machines cannot use the same VLAN ID as the host (in this case, 3001).
 
-### EIP配置
+### EIP Configuration
 
-经典网络模式下，外部能直接访问虚拟机IP，无需配置EIP
+In classic network mode, external entities can directly access virtual machine IPs without configuring EIP.
 
 
-## (单网口VPC网络) 计算节点单个网口，虚拟机使用VPC网络
+## (Single NIC VPC Network) computing node single NIC, virtual machine using VPC network
 
-这种场景下，每个计算节点宿主机只有一个网口做管理口。管理口也承载业务流量，但是虚拟机之间的业务流量经过ovn的geneve隧道封装。
+In this scenario, each computing node host has only one NIC as the management port. The management port also carries business traffic, but the business traffic between virtual machines is encapsulated by the OVN Geneve tunnel.
 
-### 宿主机网络配置
+### Host Network Configuration
 
-宿主机的管理口依然接入经典网络。
+The host's management port still accesses the classic network.
 
-需要在*Default* VPC下配置二层网络*bcast0*，并在该二层网络下配置宿主机管理口IP所用的IP子网。
+Create a layer-2 network *bcast0* in *Default* VPC, and in this layer-2 network, configure the IP subnet used by the host management port.
 
-宿主机的 host.conf networks配置同*单网口经典网络*模式
+The host.conf networks configuration is the same as the *Single NIC Classic Network* mode.
 
-例如，宿主机IP子网为 10.128.26.2。则宿主机的配置也是：
+For example, if the host IP subnet is 10.128.26.2, the configuration is also:
 
 ```yaml
 networks:
 - eth0/br0/10.128.26.2
 ```
 
-### 虚拟机网络配置
+### Virtual Machine Network Configuration
 
-虚拟机的网络为VPC管理，用户可以任意创建VPC，并在VPC内分配任意的IP子网。不同VPC之间的IP子网之间相互隔离，无法访问。相同VPC内的IP子网之间无隔离。
+The virtual machine's network is managed by VPC. Users can create any VPC and allocate any IP subnet in the VPC. IP subnets between different VPCs are isolated from each other and cannot be accessed. IP subnets within the same VPC are not isolated from each other.
 
-### EIP配置
+### EIP Configuration
 
-这种模式下，需要配置EIP，用于云平台外访问VPC内部的虚拟机。
+In this mode, EIP needs to be configured to access virtual machines in the VPC from outside the cloud platform.
 
-最简单的EIP配置是选择一台宿主机，修改/etc/yunion/host.conf，将 sdn_enable_eip_man 设置true。更具体配置方式请参见文档。使用ALL IN ONE模式安装的第一台宿主机自动开启了 sdn_enable_eip_man。
+The simplest EIP configuration is to select a host, modify /etc/yunion/host.conf, and set sdn_enable_eip_man to true. For more specific configuration methods, please refer to the documentation. The first host installed in the ALL IN ONE mode automatically enables sdn_enable_eip_man.
 
-#### EIP网关的路由配置
+#### EIP Gateway Routing ConfigurationTo use EIP, you also need to add an IP subnet for EIP under the platform bcast0 (Note that the EIP subnet should avoid being in the same subnet as the host's management IP, that is, the network address needs to be different. For example, if the host's management NIC is 10.168.22.2/24, then the EIP subnet is 10.168.23.0/24). Add a static route for the EIP subnet on the switch, with the NextHop set to the management port IP address of the first host in the ALL IN ONE deployment.
 
-为了使用EIP，还需要在平台bcast0下增加一条用于EIP分配的IP网段（注意EIP网段应该避免和宿主机的管理IP在同一个网段，也就是网络地址需要不一样，例如宿主机的管理网口是 10.168.22.2/24，则EIP网段是 10.168.23.0/24），在交换机上添加EIP网段的静态路由，NextHop设置为 ALL IN ONE 部署的第一台宿主机的管理口IP。
+## (Dual NIC Classic Network) Compute node with two NICs, virtual machines use Multi-VLAN Classic Network
 
-## (双网卡经典网络) 计算节点两个网口，虚拟机使用多VLAN经典网络
+In this scenario, each compute node has two NICs, one for management and the other for business. Business traffic between virtual machines is forwarded by a Layer 3 switch that connects to the host's business NIC. However, some virtual machines need to connect to the management NIC.
 
-这种场景下，每个计算节点有两个网口，一个做管理口，另外一个做业务口。虚拟机之间的业务流量是由宿主机业务口对接的三层交换机转发。但也有部分虚拟机需要对接管理口。
+### VPC Configuration
 
-### VPC配置
+Use the Default VPC.
 
-采用Default VPC
+### Layer-2 Network Configuration
 
-### 二层网络配置
+Create two Layer-2 networks in the Default VPC: bcast0 (management) and bcast1 (business).
 
-在Default VPC新建两个二层网络：bcast0（管理）和bcast1（业务）
+### IP Subnet Configuration
 
-### IP子网配置
+Create at least two IP subnets on bcast0, with one IP subnet used for the host's management NIC, which needs to include the host's management NIC IP address. The other subnet is used for virtual machines that require a connection to the management network.
 
-在bcast0上创建至少两个IP子网，其中一个IP子网给宿主机管理口使用，需要包含宿主机的管理口IP。另外一个子网给有对接管理网需求的虚拟机使用。
+Create 1 or more IP subnets on bcast1 for virtual machine use, and these subnets can be configured with different VLAN IDs (VLAN ID other than 1). The gateways and corresponding VLANs for these subnets need to be configured on the corresponding Layer 3 switches connected to the physical machine.
 
-在bcast1上创建1个或者多个IP子网给虚拟机使用，并且这些虚拟机用IP子网可以配置不同的VLAN ID（非1的VLAN ID）。这些IP子网的网关和对应VLAN都需要配置在物理机连接的对应三层交换机上。
+### Host Configuration
 
-### 宿主机配置
+The host's management NIC needs to be configured with a management IP address and set to Access mode on the switch.
 
-宿主机的管理口需配置管理IP，该管理口在交换机上为Access模式。
+The host's business NIC does not need to be configured with an IP address, but the business NIC needs to be configured in Trunk mode on the switch.
 
-宿主机的业务口不需要配置IP，但业务网口在交换机上需要配置为trunk模式。
-
-宿主机 /etc/yunion/host.conf 中需要有两条记录，一条给管理口，一条给业务口
+The host's /etc/yunion/host.conf file needs to have two entries, one for the management NIC and one for the business NIC:
 
 ```yaml
 networks:
@@ -145,7 +143,7 @@ networks:
 - <host_ifname1>/br1/bcast1
 ```
 
-例如:
+For example:
 
 ```yaml
 networks:
@@ -153,32 +151,30 @@ networks:
 - eth1/br1/bcast1
 ```
 
-### EIP配置
+### EIP Configuration
 
-这种模式下，外部能直接访问虚拟机IP，无需配置EIP
+In this mode, virtual machines' IPs can be directly accessed from the outside without the need to configure EIP.
 
-## (双网口VPC网络) 计算节点两个网口，虚拟机使用VPC网络
+## (Dual NIC VPC Network) Compute node with two NICs, virtual machines use VPC Network
 
-这种场景下，每个计算节点宿主机有两个网口，其中一个管理口，承载管理流量。另外一个是业务口，承载业务流量。虚拟机之间的业务流量经过ovn的geneve隧道封装，通过宿主机的业务口转发。
+In this scenario, each compute node's host has two NICs: one for management, which carries management traffic, and another for business, which carries business traffic. Business traffic between virtual machines is encapsulated in an ovn-geneve tunnel, and then forwarded through the host's business NIC.
 
-### 宿主机网络配置
+### Host Network Configuration
 
-同理，宿主机的管理口采用经典网络。
+Similarly, the host's management NIC uses a classic network. You need to configure a Layer-2 network bcast0 under Default VPC, and configure the IP subnet used by the host's management NIC under that Layer-2 network.
 
-需要在*Default* VPC下配置二层网络*bcast0*，并在该二层网络下配置宿主机管理口所用的IP子网。
-
-例如，宿主机IP子网为 10.128.26.2。则宿主机 /etc/yunion/host.conf 的配置是：
+For example, the host's IP subnet is 10.128.26.2. The host's /etc/yunion/host.conf configuration should be:
 
 ```yaml
 networks:
 - eth0/br0/10.128.26.2
 ```
 
-同时，宿主机的业务口也需要配置IP，且该业务口IP和管理口IP不应该在一个二层网络。
+Also, the host's business NIC needs to be configured with an IP address, and the IP used by the business NIC should not be in the same Layer-2 network as the IP used by the management NIC.
 
-为了确保虚拟机之前的ovn流量经过业务口，需要配置 /etc/yunion/host.conf 的 ovn_encap_ip 为宿主机业务口的IP。
+To ensure ovn traffic between virtual machines is forwarded through the business NIC, you need to configure the ovn_encap_ip in /etc/yunion/host.conf to the IP address of the host's business NIC.
 
-例如，宿主机的管理口IP为 10.128.26.2/24，业务口IP为 10.129.26.2/24，则 /etc/yunion/host.conf 配置为：
+For example, if the host's management NIC IP is 10.128.26.2/24 and the business NIC IP is 10.129.26.2/24, the /etc/yunion/host.conf file should be configured as follows:
 
 ```yaml
 ovn_encap_ip: 10.129.26.2
@@ -187,19 +183,18 @@ networks:
 - eth1/br1/10.129.26.2
 ```
 
-配置后，虚拟机之前的VPC网络流量都会封装为源和目的IP地址为业务网段的geneve流量。网络上只需要确保业务口之前网络互通，宿主机的业务口的VLAN模式无论是TRUNK还是Access都不影响。
+After the configuration is complete, ovn traffic between virtual machines will be encapsulated as geneve traffic, with source and destination IP addresses being in the business network range. Network intercommunication between business NICs is not affected by business NIC VLAN mode, whether TRUNK or Access.
 
-### 虚拟机网络配置
+### Virtual Machine Network Configuration
 
-同理，这种模式下，虚拟机的网络为VPC管理，用户可以任意创建VPC，并在VPC内分配任意的IP子网。不同VPC之间的IP子网之间相互隔离，无法访问。相同VPC内的IP子网之间无隔离。由于宿主机配置了 ovn_encap_ip 为宿主机的业务口IP，所以虚拟机之前的ovn流量都是通过宿主机的业务口转发。
+Similarly, in this mode, the virtual machine network is managed by the VPC Network, and users can create VPCs and assign any IP subnet in VPC. IP subnets between different VPCs are isolated and cannot be accessed. IP subnets in the same VPC are not isolated. As the ovn_encap_ip is configured to the host's business NIC IP address, ovn traffic between virtual machines is forwarded through the host's business NIC.
 
-### EIP配置 
+### EIP Configuration
 
-VPC网络模式下，需要配置EIP，用于外部访问指定的内部虚拟机。同理，也需要配置EIP网关和EIP网段。
+In VPC network mode, you need to configure EIP for external access to specific internal virtual machines. Similarly, EIP gateway and subnet need to be configured.
 
-#### EIP网关的路由配置
+#### EIP Gateway Routing Configuration
 
-和*单网口VPC网络*不同的地方是，为了确保EIP流量也要经过业务口，需要确保如下两个配置：
+Unlike the Single NIC VPC Network case, in order to ensure EIP traffic also passes through the business NIC, the following two configurations need to be met:
 
-* 在交换机上配置EIP网段的NextHop时，需要将EIP网关所在节点的业务网口IP作为NextHop IP。(确保进入EIP的流量走业务口)
-* 在EIP网关所在节点，需要将业务口设置为缺省路由出口。(确保流出EIP的流量走业务口)
+When configuring NextHop for the EIP subnet, on the switch, it is necessary to use the IP address of the node's business NIC on which the EIP gateway is located as the NextHop IP (to ensure that the incoming traffic to the EIP traffic goes through the business NIC).* On the node where the EIP gateway is located, the business port needs to be set as the default route for outbound traffic. (Ensure that the traffic flowing out of the EIP goes through the business port)
