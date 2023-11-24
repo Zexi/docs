@@ -3,36 +3,40 @@
     "message": "3.10",
     "description": "The label for version current"
   },
-  "sidebar.tutorialSidebar.category.Tutorial - Basics": {
-    "message": "Tutorial - Basics",
-    "description": "The label for category Tutorial - Basics in sidebar tutorialSidebar"
+  "sidebar.tutorialSidebar.category.Getting Started": {
+    "message": "Getting Started",
+    "description": "The label for category Getting Started in sidebar tutorialSidebar"
   },
-  "sidebar.tutorialSidebar.category.Tutorial - Basics.link.generated-index.description": {
-    "message": "5 minutes to learn the most important Docusaurus concepts.",
-    "description": "The generated-index page description for category Tutorial - Basics in sidebar tutorialSidebar"
+  "sidebar.tutorialSidebar.category.Private Cloud": {
+    "message": "Private Cloud",
+    "description": "The label for category Private Cloud in sidebar tutorialSidebar"
   },
-  "sidebar.tutorialSidebar.category.Tutorial - Extras": {
-    "message": "Tutorial - Extras",
-    "description": "The label for category Tutorial - Extras in sidebar tutorialSidebar"
+  "sidebar.tutorialSidebar.category.Common Problems": {
+    "message": "Common Problems",
+    "description": "The label for category Common Problems in sidebar tutorialSidebar"
   },
-  "sidebar.tutorialSidebar.category.安装部署": {
-    "message": "安装部署",
-    "description": "The label for category 安装部署 in sidebar tutorialSidebar"
+  "sidebar.tutorialSidebar.category.Multi-Cloud Management": {
+    "message": "Multi-Cloud Management",
+    "description": "The label for category Multi-Cloud Management in sidebar tutorialSidebar"
   },
-  "sidebar.tutorialSidebar.category.私有云": {
-    "message": "私有云",
-    "description": "The label for category 私有云 in sidebar tutorialSidebar"
+  "sidebar.tutorialSidebar.category.Hybrid Cloud": {
+    "message": "Hybrid Cloud",
+    "description": "The label for category Hybrid Cloud in sidebar tutorialSidebar"
   },
-  "sidebar.tutorialSidebar.category.多云管理": {
-    "message": "多云管理",
-    "description": "The label for category 多云管理 in sidebar tutorialSidebar"
+  "sidebar.tutorialSidebar.category.Miscellaneous": {
+    "message": "Miscellaneous",
+    "description": "The label for category Miscellaneous in sidebar tutorialSidebar"
   },
-  "sidebar.tutorialSidebar.category.融合云": {
-    "message": "融合云",
-    "description": "The label for category 融合云 in sidebar tutorialSidebar"
+  "sidebar.tutorialSidebar.category.guides": {
+    "message": "guides",
+    "description": "The label for category guides in sidebar tutorialSidebar"
   },
-  "sidebar.tutorialSidebar.category.其他": {
-    "message": "其他",
-    "description": "The label for category 其他 in sidebar tutorialSidebar"
+  "sidebar.tutorialSidebar.category.virt": {
+    "message": "virt",
+    "description": "The label for category virt in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.network": {
+    "message": "network",
+    "description": "The label for category network in sidebar tutorialSidebar"
   }
 }

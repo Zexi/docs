@@ -291,5 +291,81 @@
   },
   "homepage.subtitle": {
     "message": "A cloud-native open-source unified cloud platform"
+  },
+  "OcbootClone.downloadComment": {
+    "message": "# Use git clone the ocboot deployment tool locally",
+    "description": "locally download comment"
+  },
+  "中国大陆": {
+    "message": "Mainland China"
+  },
+  "其他地区": {
+    "message": "Other Regions"
+  },
+  "OcbootRun.runChinaAliRegComment": {
+    "message": "# Directly deploy and pull the container image from registry.cn-beijing.aliyuncs.com"
+  },
+  "OcbootRun.runChinaPip": {
+    "message": "# If there is a problem with slow pip installation package download, \n# you can use the -m parameter to specify the pip source\n# For example, use https://mirrors.aliyun.com/pypi/simple/ source below."
+  },
+  "OcbootRun.otherRegionHint": {
+    "message": "For some network environments, if registry.cn-beijing.aliyuncs.com is slow or unreachable, you can specify the image source: docker.io/yunion to install, with the following command:"
+  },
+  "ocbootConfigHA.primaryMasterNodeComment": {
+    "message": "primary_master_node is the node that runs k8s and Cloudpods services"
+  },
+  "ocbootConfigHA.initShellVars": {
+    "message": "Setting shell environment variables"
+  },
+  "ocbootConfigHA.generateConfigYAML": {
+    "message": "Generate the yaml deployment configuration file"
+  },
+  "不使用本地登录方式": {
+    "message": "Don't use local login"
+  },
+  "节点服务监听的地址，多网卡时可以指定对应网卡的地址": {
+    "message": "The address that the node service listens to, you can specify the address of the corresponding NIC when you have multiple NICs"
+  },
+  "对应 Kubernetes calico 插件默认网卡选择规则": {
+    "message": "Default NIC Selection Rules for the Kubernetes calico Plugin"
+  },
+  "ocbootConfigHA.controlPlaneHostHint": {
+    "message": "IP of the K8s control node, corresponding to the VIP on which keepalived listens"
+  },
+  "ocbootConfigHA.controlPlanePortHint": {
+    "message": "K8s control node apiserver listening port"
+  },
+  "ocbootConfigHA.asHost": {
+    "message": "This node acts as a Cloudpods private cloud compute node, if you don't want the control node to act as a compute node, you can set it to false"
+  },
+  "ocbootConfigHA.asHostOnVM": {
+    "message": "VM can be used as Cloudpods built-in private cloud compute nodes (default is false). When turning this on, make sure as_host: true"
+  },
+  "ocbootConfigHA.productVersion": {
+    "message": "Product version, select one from [Edge, CMP, FullStack]. FullStack will install Converged Cloud, CMP will install Multi-Cloud Management Edition, Edge will install Private Cloud"
+  },
+  "ocbootConfigHA.imageRepository": {
+    "message": "If the machine to be deployed is not in mainland China, you can use dockerhub's mirror repository: docker.io/yunion"
+  },
+  "ocbootConfigHA.enableHA": {
+    "message": "Enabling High Availability Mode"
+  },
+  "ocbootConfigHA.hostNetwork": {
+    "message": "NIC corresponding to default bridge br0 on compute node"
+  },
+  "ocbootConfigHA.enableMinio": {
+    "message": "Using minio as the VM image backend store"
+  },
+  "ocbootConfigHA.joinControlNodeVIP": {
+    "message": "The K8s vip of the control node to join"
+  },
+  "ocbootConfigHA.joinControlNodePort": {
+    "message": "The K8s apiserver port of the control node to join"
+  },
+  "ocbootConfigHA.asController": {
+    "message": "As a K8s and Cloudpods control node"
+  },
+  "ocbootConfigHA.syncNtpFromPrimaryNode": {
+    "message": "Synchronizing ntp time from the primary node"
   }
 }

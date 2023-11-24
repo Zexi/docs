@@ -1,7 +1,7 @@
 .PHONY: build
 
 # check: https://docusaurus.io/docs/i18n/tutorial
-translation-en:
+write-en-translation:
 	yarn write-translations --locale en
 
 serve:
